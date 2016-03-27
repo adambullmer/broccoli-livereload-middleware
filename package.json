@@ -1,0 +1,34 @@
+{
+  "name": "broccoli-livereload-middleware",
+  "version": "0.1.0",
+  "description": "middleware to build broccoli apps with a livereload server",
+  "main": "index.js",
+  "scripts": {
+    "test": "jshint index.js && jscs index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adambullmer/broccoli-livereload-middleware.git"
+  },
+  "keywords": [
+    "broccoli",
+    "middleware",
+    "livereload"
+  ],
+  "author": "Adam Bullmer <psycodrumfreak@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/adambullmer/broccoli-livereload-middleware/issues"
+  },
+  "homepage": "https://github.com/adambullmer/broccoli-livereload-middleware#readme",
+  "dependencies": {
+    "broccoli": "^0.16.9",
+    "broccoli-sane-watcher": "^1.1.4",
+    "tiny-lr": "^0.2.1",
+    "tree-sync": "^1.1.0"
+  },
+  "devDependencies": {
+    "jscs": "^2.11.0",
+    "jshint": "^2.9.1"
+  }
+}
