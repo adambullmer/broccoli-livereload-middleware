@@ -1,4 +1,5 @@
 var broccoli   = require('broccoli'),
+    debug      = require('debug')('broccoli-livereload-middleware'),
     Watcher    = require('broccoli-sane-watcher'),
     middleware = require('broccoli/lib/middleware'),
     HashTree   = require('broccoli-live-reload/lib/hash-tree'),
@@ -13,6 +14,9 @@ function BroccoliMiddleware (config) {
     var destDir = path.resolve(config.destDir || 'dist'),
         port    = config.port || 35729;
 
+    debug('livereload server running on port %d', port);
+    debug('syncing changes to destination directory %s', destDir);
+
     this.lrServer = new LrServer();
     this.lrServer.listen(port, this.onError.bind(this));
 
@@ -23,6 +27,8 @@ function BroccoliMiddleware (config) {
 }
 
 BroccoliMiddleware.prototype.syncChanges = function (destDir, results) {
+    debug('syncChanges: destDir: %s, results.directory: %s', destDir, results.directory);
+
     return new Sync(results.directory, destDir).sync();
 };
 
@@ -32,9 +38,9 @@ BroccoliMiddleware.prototype.onError = function (error) {
     }
 };
 
-BroccoliMiddleware.prototype.computeHashes = function (destDir, tree, err, nodes) {
-    if (err) {
-        return console.log(err);
+BroccoliMiddleware.prototype.computeHashes = function (destDir, tree, error, nodes) {
+    if (error) {
+        return this.onError(error);
     }
 
     if (!this.tree) {
@@ -46,6 +52,8 @@ BroccoliMiddleware.prototype.computeHashes = function (destDir, tree, err, nodes
     var diffs = this.tree.computeDiff(nodes).map(function ( file ) {
         return path.join(destDir, file);
     });
+
+    debug('detected diffs: ' + diffs);
 
     if (!diffs.length) {
         this.tree = tree;
@@ -63,11 +71,12 @@ BroccoliMiddleware.prototype.computeHashes = function (destDir, tree, err, nodes
 };
 
 BroccoliMiddleware.prototype.onChange = function (destDir, result) {
+    debug('Change detected');
     var tree = new HashTree(result.directory, {
         path: destDir
     });
 
-    this.syncChanges.apply(this, arguments);
+    this.syncChanges(destDir, result);
     tree.computeHashes(this.computeHashes.bind(this, destDir, tree));
 };
 
