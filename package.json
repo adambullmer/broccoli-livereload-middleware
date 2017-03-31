@@ -1,6 +1,6 @@
 {
   "name": "broccoli-livereload-middleware",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "middleware to build broccoli apps with a livereload server",
   "main": "index.js",
   "scripts": {
@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/adambullmer/broccoli-livereload-middleware#readme",
   "dependencies": {
-    "broccoli": "^0.16.9",
+    "broccoli": "^1.1.1",
     "broccoli-live-reload": "^1.0.6",
     "broccoli-sane-watcher": "^1.1.4",
     "debug": "^2.2.0",
